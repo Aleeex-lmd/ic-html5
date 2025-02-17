@@ -1,19 +1,26 @@
 name: CI
 on: [push]
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - name: pip
-      run: sudo  pip install html5validator
-    - name: Test html5
-      run: html5validator --root _build/
-    - name: Install node
-      uses: actions/setup-node@v1
-      with:
-        node-version: 8
-    - name: Install surge
-      run: npm install -g surge
-    - name: Deploy to aleeex@surge.sh
-      run: surge ./_build/ aleeex.surge.sh --token ${{ secrets.SURGE_TOKEN }}   
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install html5validator
+        run: sudo pip install html5validator
+
+      - name: Test HTML5
+        run: html5validator --root _build/
+
+      - name: Install Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install Surge
+        run: npm install -g surge
+
+      - name: Deploy to Surge
+        run: surge ./_build/ aleeex.surge.sh --token ${{ secrets.SURGE_TOKEN }}
